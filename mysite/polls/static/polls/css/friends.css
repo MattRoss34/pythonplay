@@ -1,0 +1,45 @@
+
+    .friends-header { position: fixed; z-index: 100; width: 100%; padding: 0; }
+	.friends-header label { font-size: larger; }
+    .friends-header.tab-list .tab { width: 33.333%; }
+    #friends-friends .search-header { padding-top: 0px; }
+    #friends-friends .search-header div { float: left; text-align: center; padding-top: 0px; padding-bottom: 0px; }
+
+    #friends .tab-content {
+        /*position: fixed;
+        top: 80px;
+        bottom: 35px;*/
+        margin-top: 32px;
+        width: 100%;
+        overflow-y: auto;
+        padding-bottom: 10px;
+    }
+    #friends-friends .search-header div { width: 100%; }
+	#friendFilterText { width: 100%; }
+	.friend img.profile-pic { width: 50px; height: 50px; }
+	.friend.row { background-color: #fff; margin-top: 5px; padding-top: 5px; padding-bottom: 5px; }
+	.friends-list { overflow-y: auto; width: 100%; }
+
+    //#friends-search .search-header div { padding: 5px 10px; }
+    #friends-search .search-header .ui-radio { width: 150px; }
+    /*#friends-search .search-list {
+        position: fixed;
+        top: 175px;
+        bottom: 36px;
+        width: 100%;
+        overflow-y: auto;
+    }*/
+    #friends-search-advanced { z-index: 100; }
+    #friendSearchText { width: 200px; margin-left: 50px; }
+    .advanced-search.container { margin-top: 0px; }
+    .advanced-search.container .row { border-bottom: 1px solid #eee; }
+	.search-result img.profile-pic { width: 50px; height: 50px; }
+	.search-result.row { background-color: #fff; margin-top: 5px; padding-top: 5px; padding-bottom: 5px; }
+	.search-result-list { overflow-y: auto; width: 100%; }
+
+    #friends-contacts .container { margin-top: 5px; }
+    #friends-contacts .row { border-bottom: 1px solid #eee; }
+
+	.request img.profile-pic { width: 50px; height: 50px; }
+	.request.row { background-color: #fff; margin-top: 5px; padding-top: 5px; padding-bottom: 5px; }
+	.request-list { overflow-y: auto; width: 100%; }

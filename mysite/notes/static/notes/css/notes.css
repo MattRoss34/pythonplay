@@ -1,0 +1,96 @@
+html, body {
+	background-color: lightyellow;
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	display: table;
+	margin: 0;
+}
+
+.notes-list {
+	display: table-cell;
+	width: 20%;
+	vertical-align: top;
+	min-width: 100px;
+	max-width: 500px;
+	margin: 0 10px;
+	border-left: lightgray solid thin;
+	border-right: lightgray solid thin;
+	padding: 5px 10px 5px 10px;
+	background-color: #fff;
+}
+.search-bar input {
+	width: 95%;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	font-size: 14px;
+	outline: none;
+}
+.note-item {
+	display: block;
+	text-decoration: none;
+	color: #000;
+	padding: 5px;
+	padding-bottom: 5px;
+	border-bottom: lightgray solid thin;
+}
+.note-item.active {
+	background-color: lightblue;
+}
+.note-item.first {
+	border-top: lightgray solid thin;
+}
+.note-title {
+	display: block;
+}
+.note-date {
+	color: gray;
+	font-size: small;
+}
+.note {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+.note .header {
+	display: table-row;
+	width: 100%;
+	height: 50px;
+}
+.note .header .container {
+	display: table;
+	width: 100%;
+	margin-top: 10px;
+}
+.note .header .add-note {
+	display: table-cell;
+	width: 1%;
+	padding-left: 10px;
+	font-size: x-large;
+	cursor: pointer;
+}
+.note .header .heading {
+	display: table-cell;
+	width: 80%;
+	text-align: center;
+}
+.note .text {
+	display: table-row;
+}
+.note .text textarea {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	height: 100%;
+	font: normal 14px verdana;
+	line-height: 25px;
+	padding: 2px 10px;
+	border: none;
+	border-style: none;
+	outline: none;
+	background-color: lightyellow;
+	resize: none;
+}

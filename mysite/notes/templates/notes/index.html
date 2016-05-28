@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html ng-app="notesapp">
+<head>
+    {% load staticfiles %}
+    <title>Notes App</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/notes.css' %}" />
+</head>
+<body ng-controller="NotesController">
+    <div class="notes-list">
+        {% if notes_list %}
+            <div class="search-bar">
+                <input ng-model="searchText" placeholder="Search Notes...">
+            </div>
+            {% for thisNote in notes_list %}
+                {% if forloop.counter0 == 0 %}
+                <a class="note-item first {% if note and note.id == thisNote.id %}active{% endif %}" href="/notes/{{thisNote.id}}" ng-show="matches('{{thisNote.title}}')">
+                {% else %}
+                <a class="note-item {% if note and note.id == thisNote.id %}active{% endif %}" href="/notes/{{thisNote.id}}" ng-show="matches('{{thisNote.title}}')">
+                {% endif %}
+                    <span class="note-title">{{thisNote.title}}</span>
+                    <span class="note-date">{{thisNote.mod_date_short}}</span>
+                </a>
+            {% endfor %}
+        {% else %}
+            <h3 class="side-note">No notes are available.</h3>
+        {% endif %}
+    </div>
+    <div class="note">
+        {% if note %}
+            <div class="header">
+                <div class="container">
+                    <div class="add-note" ng-click="addNote()">[+]</div>
+                    <div class="heading">{{note.mod_datetime_long}}</div>
+                </div>
+            </div>
+            <div class="text">
+                <textarea maxlength="3000">{{note.text}}</textarea>
+            </div>
+        {% else %}
+            <div class="header">
+                <div class="add-note" ng-click="addNote()">[+]</div>
+                <div class="heading"></div>
+            </div>
+        {% endif %}
+    </div>
+    <form name="newNoteForm" action="/notes/add/" method="post">{% csrf_token %}<input type="hidden" name="title"></form>
+    <script type="text/javascript" src="{% static 'notes/scripts/angular.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'notes/scripts/notes.js' %}"></script>
+</body>
+</html>

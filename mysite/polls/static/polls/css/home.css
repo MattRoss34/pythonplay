@@ -1,0 +1,22 @@
+#home-home {
+    /*position: fixed;
+    top: 82px;
+    bottom: 35px;
+    margin-top: 32px;*/
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+#home .tab-content { margin-top: 35px; margin-bottom: 35px; }
+.home-header { width: 100%; position: fixed; z-index: 100; }
+.home-header.row { padding: 0; }
+.home-header label { font-size: larger; }
+.home-header.tab-list .tab { width: 50%; }
+
+.home-feed .item img.profile-pic { width: 50px; height: 50px; }
+.home-feed .item { background-color: #fff; margin-top: 10px; padding-top: 5px; padding-bottom: 5px; }
+.home-feed .item div { padding-left: 0; padding-right: 0; color: #000; }
+    
+.vote-down, .vote-up { margin-left: 10px; margin-right: 10px; display: inline-block; }
+.talley { width: 30px; display: inline-block; color: rgb(0, 155, 230); }
+.vote-down:hover, .vote-up:hover, .item-comments:hover { cursor: pointer; }

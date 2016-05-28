@@ -1,0 +1,100 @@
+
+    .groups-header { position: fixed; z-index: 100; width: 100%; background-color: #fff; padding: 0; }
+	.groups-header label { font-size: larger; }
+    .groups-header.tab-list .tab { width: 33.333%; }
+    #groups .tab-content {
+        /*position: fixed;
+        top: 80px;
+        bottom: 35px;*/
+        padding-top: 32px;
+        width: 100%;
+        overflow-y: auto;
+        padding-bottom: 10px;
+    }
+    #groups .search-header { padding-top: 0px; }
+    #groups .search-header div { float: left; text-align: center; padding-top: 0px; padding-bottom: 0px; }
+
+    #groups .search-header div { width: 100%; }
+	#groupFilterText, #groupSearchText { width: 100%; }
+	.group img.profile-pic { width: 50px; height: 50px; }
+	.group.row { height: 80px; background-color: #fff; margin-top: 5px; padding-top: 5px; padding-bottom: 5px; cursor: pointer; }
+	.group-list { overflow-y: auto; width: 100%; }
+    .group div { height: 100%; padding-right: 5px; padding-left: 5px; }
+    .group li { list-style: none; line-height: 1.2em; white-space: nowrap; overflow: hidden; }
+    .group .heading { color: rgb(0, 155, 230); font-weight: bold; }
+
+    #groups-browse { overflow-x: hidden; }
+    #groups-browse .filter div { padding-left: 5px; padding-right: 5px; }
+
+    #groups-create { margin-top: 5px; }
+    #groups-create .row { padding-top: 10px; padding-bottom: 10px; }
+    //#groups-create .ui-input-text { -webkit-box-shadow: none !important; border: none; }
+    //#groups-create input, #groups-create select { border: none; width: 100%; border-bottom: 1px solid #aaa; }
+    //#groups-create textarea { border: 1px solid #aaa !important; width: 100%; }
+    //#groups-create input:focus, #groups-create select:focus { outline: none; }
+    #groups-create .btn-container { padding-top: 0; }
+    ::-webkit-input-placeholder  { color:#aaa; } /* Webkit */
+    :-moz-placeholder { color:#aaa; }  /* Firefox <= 18 */
+    ::-moz-placeholder { color:#aaa; }  /* Firefox >= 19 */
+    :-ms-input-placeholder {  color: #aaa; } /* Internet Explorer */
+
+    .group .img-container img { max-height: 70px; }
+
+    .group-detail-header { width: 100%; background-color: #fff; padding: 0; }
+	.group-detail-header label { font-size: larger; }
+    .group-detail-header.tab-list .tab { width: 25%; }
+
+    /*#group-detail-info { display: table; width: 100%; }*/
+    #group-detail-info .header {
+        background-image: url("../img/LakeGeneva.png");
+        background-size: 100%;
+        list-style: none;
+        height: 125px;
+        /*display: table-cell;
+        vertical-align: bottom;*/
+        position: relative;
+        color: #fff;
+        padding: 10px;
+        
+    }
+    #group-detail-info .header .info {
+        display: block;
+        background-color: rgba(88,88,88,0.5);
+        padding: 5px;
+        position: absolute;
+        bottom: 10px;
+    }
+    #group-detail-info .header .heading { font-weight: bold; }
+    #group-detail-info .row { margin: 5px; background-color: #fff; }
+    #group-detail-info .group-response .ui-controlgroup-controls { width: 100%; }
+    #group-detail-info .group-response .ui-radio { width: 33.333%; }
+    #group-detail-info .group-response .ui-btn { text-align: center; }
+    #group-detail-info #map-canvas {
+        width: 100%;
+        height: 125px;
+    }
+    #group-detail-info .location { background-color: #fff; list-style: none; }
+    #group-detail-info li { line-height: 1.2em; }
+    #group-detail-info .members .row div { padding-left: 2px; padding-right: 2px; text-align: center; }
+    #group-detail-info .members .row { line-height: 42px; vertical-align: middle; }
+
+
+#group-detail-info .upcoming-events .label { padding-bottom: 5px; }
+.event-container { background-color: #fff; }
+.event-container.row { margin: 5px; background-color: #fff; }
+.event-container div { height: 100%; padding-right: 5px; padding-left: 5px; }
+.event-container { border: 2px solid lightgrey }
+.event-container li { list-style: none; line-height: 1.2em; white-space: nowrap; overflow: hidden; }
+.event-container .heading { color: rgb(0, 155, 230); font-weight: bold; }
+.event-container .date-container { text-align: center; }
+
+#group-detail-info .recent-activity img.profile-pic { width: 50px; height: 50px; }
+#group-detail-info .recent-activity .container .row div { padding: 2px; }
+#group-detail-info .recent-activity .row { border: 2px solid lightgrey; }
+
+    #group-detail-pics .row { margin: 5px; background-color: #fff; }
+    #group-detail-pics .row div { padding: 0px; }
+
+#group-detail-comments .item img.profile-pic { width: 50px; height: 50px; }
+#group-detail-comments .item { background-color: #fff; margin-top: 10px; padding-top: 5px; padding-bottom: 5px; }
+#group-detail-comments .item div { padding-left: 0; padding-right: 0; color: #000; }

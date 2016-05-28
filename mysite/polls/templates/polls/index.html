@@ -1,0 +1,870 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html ng-app="afterhours">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/css/jquery.mobile-1.4.5.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/css/master.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/css/home.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/css/profile.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/css/events.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/css/groups.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'polls/css/friends.css' %}" />
+        <title>Hello World</title>
+    </head>
+    <body ng-controller="AfterHoursController as ah">
+        <div data-role="page">
+            <div class="main-header row" data-role="header">
+                    After Hours
+            </div>
+            <div class="main-content" data-role="content">
+                
+            <div id="home" class="container page-container active">
+                    
+					<div class="home-header page-header tab-list row">
+                        <div id="home-tab" class="tab active" tab-ref="#home-home">Home<div class="divider"></div></div>
+                        <div id="news-tab" class="tab next-tab" tab-ref="#home-news">News</div>
+					</div>
+                    <div id="home-home" class="tab-content">
+					   <div class="home-feed">
+						<div class="row item" ng-repeat="item in feeds">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+                                    <div class="col-xs-10">
+                                        <strong>{{item.firstName}} {{item.lastName}}</strong>&nbsp;&nbsp; {{item.timeLapse}}
+                                        <p>{{item.text}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <img src="{% static 'polls/img/LakeGeneva.png' %}"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4 center"><div class="vote-down arrow-down"></div><div class="talley">{{item.voteTalley}}</div><div class="vote-up arrow-up"></div></div>
+                                    <div class="col-xs-4 item-comments">Comments ({{item.comments.length}})</div>
+                                </div>
+                            </div>
+						</div>
+					   </div>
+                        
+                    </div>
+                    
+                    <div id="home-news" class="tab-content row" style="display: none;">
+                        News Items...
+                    </div>
+                    
+            </div>
+        
+            <div id="profile" class="container page-container" style="display: none;">
+                <!-- <div class="row" data-role="header">
+                    header
+                </div><!-- /header -->
+                
+                <!-- <div class="main-content" data-role="content"> -->
+                    
+                    <div class="profile-header">
+						<a href="#">
+							<img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/>
+						</a>
+						<div class="profile-summary">
+							<h3>{{user.firstName}} {{user.lastName}}</h3>
+							<p>{{user.age}} - {{user.relStatus}} - {{user.gender}}</p>
+							<p class="aLink">Friends ({{user.numFriends}})</p>
+							<div class="editLink smaller">Edit</div>
+						</div>
+					</div>
+					<div class="profile-details">
+						<div class="info-header">About</div>
+						<div class="info-box">
+							<li>Studies {{user.studies}} at {{user.schoolName}}<br>
+							<span class="smaller greyed">Graduates in {{user.gradYear}}</span>
+							<li>Lives in {{user.city}}, {{user.state}}
+							<li>From {{user.homeCity}}, {{user.homeState}}
+							<div class="editLink smaller">Edit</div>
+							<div class="more-details">More</div>
+						</div>
+						
+						<div class="info-header">Organizations</div>
+						<div class="info-box">
+							<li ng-repeat="orgRole in user.organizations">{{orgRole.role}} of {{orgRole.org}}</li>
+							<div class="editLink smaller">Edit</div>
+						</div>
+						
+						<div class="info-header">Self-Summary</div>
+						<div class="info-box">
+							<li>{{user.selfSummary}}
+							<div class="editLink smaller">Edit</div></li>
+						</div>
+						
+						<div class="info-header">Contact Info</div>
+						<div class="info-box">
+							<li>Email: <a href="mailto:{{user.email}}">{{user.email}}</a>
+							<li>Phone: {{user.phone}}
+							<div class="editLink smaller">Edit</div></li>
+						</div>
+					</div>
+                    
+				<!-- </div> --> <!-- /main-content -->
+                
+                <!-- <div class="footer tab-list" data-role="footer">
+                    <a class="tab" tab-ref="#home">Home</a>
+                    <a class="tab active" tab-ref="#profile">Profile</a>
+                    <a class="tab" tab-ref="#events">Events</a>
+                    <a class="tab" tab-ref="#groups">Groups</a>
+                    <a class="tab" tab-ref="#friends">Friends</a>
+                </div><!-- /footer -->
+            </div>
+        
+            <div id="editProfileOverlay" class="container" style="display: none;">
+                <div class="overlay-wrapper">
+                	<div class="close"><a href="#">Close X</a></div>
+                	<center><h3>Edit Profile</h3></center>
+                      <form name="editProfileForm">
+                    		<label for="profilePic">Profile Picture</label>
+                    		<img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/>
+                    		<input type="file" id="profilePic" name="profilePic" accept="image/*">
+                    		
+                    		<label for="firstName">First Name</label>
+							<input type="text" id="firstName" name="firstName" value="{{user.firstName}}">
+							
+                    		<label for="lastName">Last Name</label>
+							<input type="text" id="lastName" name="lastName" value="{{user.lastName}}">
+							
+                    		<label for="dateOfBirth">Date of Birth</label>
+                    		<span class="dob-edit">
+                    			<span class="month">
+									<input type="text" id="dobMonth" name="dobMonth" value="{{user.dobMonth}}"> / 
+								</span>
+                    			<span class="day">
+									<input type="text" id="dobDay" name="dobDay" value="{{user.dobDay}}"> / 
+								</span>
+                    			<span class="year">
+									<input type="text" id="dobYear" name="dobYear" value="{{user.dobYear}}">
+								</span>
+                    		</span>
+							
+                    		<label for="relStatus">Relationship Status</label>
+							<select id="relStatus" name="relStatus" ng-model="user.relStatus" data-mini="true">
+								<option value="N">Not In a Relationship</option>
+								<option value="I">In a Relationship</option>
+							</select>
+							
+                    		<label for="gender">Gender</label>
+							<select id="gender" name="gender" ng-model="user.gender" data-mini="true">
+								<option value="">Not Specified</option>
+								<option value="F">Female</option>
+								<option value="M">Male</option>
+							</select>
+					  </form>
+				</div>
+            </div>
+        
+            <div id="events" class="container page-container" style="display: none;">
+                    
+					<div class="events-header page-header tab-list row">
+                        <div class="tab active" tab-ref="#events-mycalendar">My Calendar<div class="divider"></div></div>
+                        <div class="tab" tab-ref="#events-browse">Find Events<div class="divider"></div></div>
+                        <div class="tab next-tab" tab-ref="#events-create">Create Event</div>
+					</div>
+                    <div id="events-mycalendar" class="tab-content row">
+                        <div class="search-header row">
+						  <div class="col-xs-8"><input data-type="search" id="eventFilterText" name="eventFilterText" placeholder="Search..."></input></div>
+						  <div class="col-xs-4">
+                              <select data-mini="true">
+                                  <option value="all">All</option>      
+                                  <option value="pending">Pending</option>
+                                  <option value="yes">Yes</option>
+                                  <option value="no">No</option>
+                                  <option value="maybe">Maybe</option>
+                              </select>
+                            </div>
+				        </div>
+					   <div class="events-list" data-filter="true" data-input="#eventFilterText">
+						<div class="event row" event-id="{{event.id}}" ng-repeat="event in user.events" ng-click="viewEventDetail(event)">
+							<div class="col-xs-4 img-container"><img class="event-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+							<div class="col-xs-8">
+								<li><span class="heading">{{event.name}}</span>&nbsp;<small>- {{event.privacy}}</small>
+                                <li>{{event.location.name}}
+                                <li>{{event.location.address1}}
+                                <li>{{event.shortDateTimeDesc}}
+                                <li><span class="small">Hosted by {{event.host}} | Invited by {{event.sender}}</span>
+							</div>
+						</div>
+					   </div>
+                    </div>
+                    <div id="events-create" class="tab-content row" style="display: none;">
+                      <form id="createEventForm" name="createEventForm">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="type" placeholder="Select an Event Type"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="name" placeholder="Event Name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <input type="date" name="startDate" placeholder="Start Date (MM/DD/YYYY)"/>
+                            </div>
+                            <div class="col-xs-4">
+                                <input type="time" name="startTime" placeholder="Start Time (HH:MM AM/PM)"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <input type="date" name="endDate" placeholder="End Date (MM/DD/YYYY)"/>
+                            </div>
+                            <div class="col-xs-4">
+                                <input type="time" name="endTime" placeholder="End Time (HH:MM AM/PM)"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="location" placeholder="Location"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="privacy" placeholder="Privacy"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="invitees" placeholder="Invite Guests &amp; Friends"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <textarea name="description" placeholder="Describe your event..." rows="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="row btn-container">
+                            <div class="col-xs-12"><button class="btn">Create</button></div>
+                        </div>
+                      </form>
+                    </div>
+                    <div id="events-browse" class="tab-content row" style="display: none;">
+                        <div class="search-header row">
+                            <div class="col-xs-8"><input data-type="search" id="eventBrowseText" name="eventBrowseText" placeholder="Filter..."></input></div>
+						    <div class="col-xs-4">
+                              <select data-mini="true">
+                                  <option value="all">Trending</option>      
+                                  <option value="parties">Party</option>
+                                  <option value="pregame">Pre-game</option>
+                                  <option value="bar">Bar</option>
+                                  <option value="tailgate">Tailgate</option>
+                                  <option value="happyhour">Happy Hour</option>
+                                  <option value="afterhours">AfterHours</option>
+                                  <option value="greek">Greek</option>
+                                  <option value="charity">Charity</option>
+                                  <option value="meetup">Meetup</option>
+                              </select>
+                            </div>
+				        </div>
+                        <div class="events-browse-list" data-filter="true" data-input="#events-browse-type">
+                            <div class="event row" ng-repeat="event in user.events" ng-click="viewEventDetail(event)">
+                                <div class="col-xs-4 img-container"><img class="event-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+                                <div class="col-xs-8">
+								    <li><span class="heading">{{event.name}}</span>&nbsp;<small>- {{event.privacy}}</small></li>
+                                    <li>{{event.location.name}}</li>
+                                    <li>{{event.location.address1}}</li>
+                                    <li>{{event.shortDateDesc}}</li>
+                                    <li><span class="small">Hosted by {{event.host}} | Invited by {{event.sender}}</span></li>
+                                    <li class="hide">privacyFilter-{{event.privacy}}</li>
+                                </div>
+						    </div>
+                        </div>
+                    </div>
+                    
+            </div>
+    
+            <div id="groups" class="container page-container" style="display: none;">
+                
+                <div class="groups-header page-header tab-list row">
+                        <div class="tab active" tab-ref="#groups-mycalendar">My Groups<div class="divider"></div></div>
+                        <div class="tab next-tab" tab-ref="#groups-browse">Find Groups<div class="divider"></div></div>
+                        <div class="tab" tab-ref="#groups-create">Create Group</div>
+					</div>
+                    <div id="groups-mycalendar" class="tab-content row">
+                        <div class="search-header row">
+						  <div class="col"><input data-type="search" id="groupFilterText" name="groupFilterText" placeholder="Filter..."></input></div>
+				        </div>
+					   <div class="groups-list" data-filter="true" data-input="#groupFilterText">
+						<div class="group row" group-id="{{group.id}}" ng-repeat="group in user.groups" ng-click="viewGroupDetail(group)">
+							<div class="col-xs-4 img-container"><img class="group-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+							<div class="col-xs-8">
+								<li><span class="heading">{{group.name}}</span>
+                                <li>{{group.size}} Members | {{group.privacy}}
+                                <li><span style="font-size: smaller; color: gray;">Created in the {{group.network}} Network</span>
+							</div>
+						</div>
+					   </div>
+                    </div>
+                    <div id="groups-browse" class="tab-content row" style="display: none;">
+                        <div class="filter row">
+                            <!--<div class="col-xs-7">
+                                <select id="groups-browse-type" name="groups-browse-type" data-mini="true">
+                                    <option value="">Group Type</option>
+                                    <option value="privacyFilter-Invite Only">Invite Only</option>
+                                    <option value="privacyFilter-Group">Group</option>
+                                    <option value="privacyFilter-Network">Network</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-5">
+                                <select id="groups-browse-type" name="groups-browse-type" data-mini="true">
+                                    <option value="">Privacy</option>
+                                    <option value="privacyFilter-Public">Public</option>
+                                    <option value="privacyFilter-Private">Private</option>
+                                    <option value="privacyFilter-Secured">Secured</option>
+                                </select>
+                            </div>-->
+                            <div class="search-header row">
+                                <div class="col-xs-8"><input data-type="search" id="groupSearchText" name="groupSearchText" placeholder="Search..."></input></div>
+                                <div class="col-xs-4">
+                                    <select data-mini="true">
+                                  <option value="all">Greek</option>      
+                                  <option value="parties">Student</option>
+                                  <option value="pregame">Sports</option>
+                                  <option value="bar">Charity</option>
+                                  <option value="tailgate">Meetup</option>
+                                  <option value="happyhour">Study</option>
+                                    </select>
+                                </div>
+                                <!--<div class="col"><a id="advancedSearchBtn" href="#" >Advanced</a></div>-->
+				            </div>
+					    </div>
+                        <div class="groups-browse-list" data-filter="true" data-filter-reveal="true" data-input="#groupSearchText">
+                            <div class="group row" ng-repeat="group in user.groups" ng-click="viewGroupDetail(group)">
+                                <div class="col-xs-4 img-container"><img class="group-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+                                <div class="col-xs-8">
+								    <li><span class="heading">{{group.name}}</span>&nbsp;<small>- {{group.privacy}}</small></li>
+                                    <li>{{group.location.name}}</li>
+                                    <li>{{group.location.address1}}</li>
+                                    <li>{{group.shortDateDesc}}</li>
+                                    <li><span class="small">Hosted by {{group.host}} | Invited by {{group.sender}}</span></li>
+                                    <li class="hide">privacyFilter-{{group.privacy}}</li>
+                                </div>
+						    </div>
+                        </div>
+                    </div>
+                    <div id="groups-create" class="tab-content row" style="display: none;">
+                      <form id="creategroupForm" name="creategroupForm">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="type" placeholder="Select a group Type"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="name" placeholder="group Name"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <input type="date" name="startDate" placeholder="Start Date (MM/DD/YYYY)"/>
+                            </div>
+                            <div class="col-xs-4">
+                                <input type="time" name="startTime" placeholder="Start Time (HH:MM AM/PM)"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <input type="date" name="endDate" placeholder="End Date (MM/DD/YYYY)"/>
+                            </div>
+                            <div class="col-xs-4">
+                                <input type="time" name="endTime" placeholder="End Time (HH:MM AM/PM)"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="location" placeholder="Location"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="privacy" placeholder="Privacy"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text" name="invitees" placeholder="Invite Guests &amp; Friends"/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <textarea name="description" placeholder="Describe your group..." rows="10"></textarea>
+                            </div>
+                        </div>
+                        <div class="row btn-container">
+                            <div class="col-xs-12"><button class="btn">Create</button></div>
+                        </div>
+                      </form>
+                    </div>
+            </div>
+    
+            <div id="friends" class="container page-container" style="display: none;">
+                    
+					<div class="friends-header page-header tab-list row">
+                        <div class="tab active previous-tab" tab-ref="#friends-friends">Friends<div class="divider"></div></div>
+                        <div class="tab next-tab" tab-ref="#friends-search">Search<div class="divider"></div></div>
+                        <!--<div class="tab" tab-ref="#friends-contacts">Contacts<div class="divider"></div></div>-->
+                        <div class="tab" tab-ref="#friends-pending">Pending<div class="divider"></div></div>
+                        <!--<div class="tab" tab-ref="#friends-suggestions">Fav/Sug</div>-->
+					</div>
+                    <div id="friends-friends" class="tab-content">
+                        <div class="search-header">
+						  <div class="col"><input data-type="search" id="friendFilterText" name="friendFilterText" placeholder="Filter by Name..."></input></div>
+				        </div>
+					   <div class="friends-list" data-filter="true" data-input="#friendFilterText">
+						<div class="friend row" ng-repeat="friend in user.friends">
+							<div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+							<div class="col-xs-7">
+								<strong>{{friend.firstName}} {{friend.lastName}}</strong><br>
+								{{friend.numSharedFriends}} Shared Friends
+							</div>
+							<div class="btn-container col-xs-3"><div class="btn">Friends</div></div>
+						</div>
+					   </div>
+                        
+                    </div>
+                
+                    <div id="friends-search" class="tab-content" style="display: none;">
+                        <div class="search-header">
+                            <div class="col-xs-12">
+                                <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                    <label><input type="radio" id="simpleSearchBtn" name="friendSearchType" value="on" checked="checked">Simple</label>
+                                    <label><input type="radio" id="advancedSearchBtn" name="friendSearchType" value="off">Advanced</label>
+                                </fieldset>
+                            </div>
+				        </div>
+                        <div id="friends-search-simple">
+                            <div class="col-xs-12">
+                                <input data-type="search" id="friendSearchText" name="friendSearchText" placeholder="Search..."></input>
+                            </div>
+                            <div id="FindFromContacts" class="col-xs-12">
+                                <div class="row">
+                                    <div class="col-xs-11">Find Friends From Your Contacts</div>
+                                    <div class="col-xs-1">></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-11">Connect via Facebook</div>
+                                    <div class="col-xs-1">></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-11">Connect via Google</div>
+                                    <div class="col-xs-1">></div>
+                                </div>
+                            </div>
+					   <div class="search-list" data-filter="true" data-filter-reveal="true" data-input="#friendSearchText">
+						<div class="friend row" ng-repeat="friend in user.friends">
+							<div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+							<div class="col-xs-6">
+								<strong>{{friend.firstName}} {{friend.lastName}}</strong><br>
+								{{friend.numSharedFriends}} Shared Friends
+							</div>
+							<div class="btn-container col-xs-4"><div class="btn">Add Friend</div></div>
+						</div>
+					   </div>
+                        </div>
+                        <div id="friends-search-advanced" class="advanced-search container" style="display: none;">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <input data-type="search" id="friendSearchAdvancedText" name="friendSearchAdvancedText" placeholder="Name"></input>
+                                </div>
+                                <div id="friendSearchAdvToggle" class="center">
+                                    Show Less Options
+                                </div>
+                                <span id="friendSearchAdvOptions">
+                                <div class="col-xs-12">
+                                  <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                    <legend>Gender:</legend>
+                                    <label><input type="radio" name="friendSearchGender" value="male" checked="checked">Male</label>
+                                    <label><input type="radio" name="friendSearchGender" value="female">Female</label>
+                                  </fieldset>
+                                </div>
+                                <div class="col-xs-12">
+                                    <label for="minAge">Min Age:</label>
+                                    <input type="range" name="minAge" id="minAge" value="17" min="17" max="100" />
+                                </div>
+                                <div class="col-xs-12">
+                                    <label for="minAge">Max Age:</label>
+                                    <input type="range" name="minAge" id="minAge" value="100" min="17" max="100" />
+                                </div>
+                                    <!--
+                                <div class="col">{{searchAgeMin}}-{{searchAgeMax}}</div>
+                                <div class="col">
+                                    <input type="range" id="searchAgeMin" name="searchAgeMin" ng-model="searchAgeMin" min="16" max="50"/>
+                                    <input type="range" id="searchAgeMin" name="searchAgeMax" ng-model="searchAgeMax" min="16" max="50"/>
+                                </div>
+                                    -->
+                                <div class="col-xs-12" data-role="controlgroup" data-type="horizontal">
+                                    <legend>Class:</legend>
+                                    <label><input type="radio" name="friendSearchYear" value="on" checked="checked">Fresh</label>
+                                    <label><input type="radio" name="friendSearchYear" value="off">Soph</label>
+                                    <label><input type="radio" name="friendSearchYear" value="off">Junior</label>
+                                    <label><input type="radio" name="friendSearchYear" value="off">Senior</label>
+                                    <label><input type="radio" name="friendSearchYear" value="off">Grad</label>
+                                </div>
+                                <div class="col-xs-12">
+                                    <legend>Network:</legend>
+                                    <select type="select" name="friendSearchNetwork">
+                                    <input type="text" name="friendSearchNetworkOther">
+                                </div>
+                                <div class="col-xs-12">
+                                    <legend>Major/Minor:</legend>
+                                    <input type="text" name="friendSearchMajorMinor">
+                                </div>
+                                <div class="col-xs-12">
+                                    <legend>Organization/Group:</legend>
+                                    <input type="text" name="friendSearchOrgGroup">
+                                </div>
+                                <div class="col-xs-12" data-role="controlgroup" data-type="horizontal">
+                                    <legend>Relationship Status:</legend>
+                                    <label><input type="radio" name="friendSearchRelStatus" value="single" checked="checked">None</label>
+                                    <label><input type="radio" name="friendSearchRelStatus" value="dating">Single</label>
+                                    <label><input type="radio" name="friendSearchRelStatus" value="married">In a Relationship</label>
+                                </div>
+                            </div>
+                            </span>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div id="friendSearchAdvSubmit" class="btn">Search</div>
+                                </div>
+                            </div>
+					   <div id="friendSearchAdvResults" class="search-list" data-filter="true" data-input="#friendSearchAdvancedText" style="display: none;">
+						<div class="friend row" ng-repeat="friend in user.friends">
+							<div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+							<div class="col-xs-6">
+								<strong>{{friend.firstName}} {{friend.lastName}}</strong><br>
+								{{friend.numSharedFriends}} Shared Friends
+							</div>
+							<div class="btn-container col-xs-4"><div class="btn">Add Friend</div></div>
+						</div>
+					   </div>
+                        </div>
+                    </div>
+                <!--
+                    <div id="friends-contacts" class="tab-content" style="display: none;">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xs-11">Find Friends From Your Contacts</div>
+                                <div class="col-xs-1">></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-11">Connect via Facebook</div>
+                                <div class="col-xs-1">></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-11">Connect via Google</div>
+                                <div class="col-xs-1">></div>
+                            </div>
+                        </div>
+                    </div>
+                -->
+                    <div id="friends-pending" class="tab-content" style="display: none;">
+					   <div class="request-list">
+						<div class="request row" ng-repeat="request in user.friendRequests">
+							<div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+							<div class="col-xs-5">
+								<strong>{{request.firstName}} {{request.lastName}}</strong><br>
+								{{request.numSharedFriends}} Shared Friends
+							</div>
+							<div class="btn-container col-xs-5">
+                                <div class="btn" id="FriendRequestAccept">Accept</div>
+                                <div class="btn" id="FriendRequestIgnore" class="pad-btn">Ignore</div>
+                            </div>
+						</div>
+                           <!--<div class="btn-row">
+                               <div class="btn wide find-friends">Find Friends</div>
+                            </div>-->
+					   </div>
+                    </div>
+                
+                    <div id="friends-suggestions" class="tab-content" style="display: none;">
+                        suggestions content
+                    </div>
+            </div>
+            </div>
+
+            <div class="footer tab-list ui-grid-d">
+                <div class="tab ui-block-a active" tab-ref="#home">Home<div class="divider"></div></div>
+                <div class="tab ui-block-b" tab-ref="#profile">Profile<div class="divider"></div></div>
+                <div class="tab ui-block-c" tab-ref="#events">Events<div class="divider"></div></div>
+                <div class="tab ui-block-d" tab-ref="#groups">Groups<div class="divider"></div></div>
+                <div class="tab ui-block-e" tab-ref="#friends">Friends</div>
+            </div><!-- /footer -->
+        </div>
+        <div id="event-detail-page" data-role="page">
+            <div class="main-header row" data-role="header">
+                    <a href="#" class="ah-back-btn" data-rel="back">< After Hours</a>
+            </div>
+            <div class="main-content" data-role="content">
+                    <div class="event-detail-header page-header tab-list row">
+                        <div class="tab active" tab-ref="#event-detail-info">Event Info<div class="divider"></div></div>
+                        <div class="tab next-tab" tab-ref="#event-detail-pics">Pictures<div class="divider"></div></div>
+                        <div class="tab" tab-ref="#event-detail-comments">Comments</div>
+					</div>
+                    <div id="event-detail-info" class="tab-content">
+                        <div class="header row">
+                            <div class="info">
+                                <li><span class="heading">{{selectedEvent.name}}</span>&nbsp;<small>- {{selectedEvent.privacy}}</small></li>
+                                <li><span class="small">Hosted by {{selectedEvent.host}} | Invited by {{selectedEvent.sender}}</span></li>
+                            </div>
+                        </div>
+                        <div class="event-response row" data-role="controlgroup" data-type="horizontal">
+                            <label><input type="radio" name="eventResponse" value="off" data-mini="true">Going</label>
+                            <label><input type="radio" name="eventResponse" value="off" data-mini="true">Maybe</label>
+                            <label><input type="radio" name="eventResponse" value="off" data-mini="true">Not Going</label>
+                        </div>
+                        <div id="map-canvas" class="row"></div>
+                        <div class="location row">
+                            <div class="col-xs-2 ui-btn-icon-notext ui-icon-location">
+                            </div>
+                            <div class="col-xs-4">
+                                <li>{{selectedEvent.location.name}}</li>
+                                <li>{{selectedEvent.location.address1}}</li>
+                                <li>{{selectedEvent.location.city}}, {{selectedEvent.location.state}} {{selectedEvent.location.zip}}</li>
+                            </div>
+                            <div class="col-xs-2 ui-btn-icon-notext ui-icon-clock">
+                            </div>
+                            <div class="col-xs-4">
+                                <li>{{selectedEvent.shortDateDesc}}</li>
+                                <li>{{selectedEvent.shortTimeDesc}}</li>
+                            </div>
+                        </div>
+                        <div class="invitees">
+                            <div class="row">
+                                <div class="col-xs-3"><b>Invited (35)</b></div>
+                                <div class="col-xs-9">
+                                    <a href="#" data-role="button" data-icon="check" data-iconpos="notext" data-inline="true" data-mini="true"></a>(15)
+                                    <a href="#" data-role="button" data-icon="question" data-iconpos="notext" data-inline="true" data-mini="true"></a>(10)
+                                    <a href="#" data-role="button" data-icon="delete" data-iconpos="notext" data-inline="true" data-mini="true"></a>(10)
+                                </div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12"><b>Description</b></div>
+                            <div class="col-xs-12">
+                                Come celebrate with us in Hawaii!!! We'll have great drinks, great people, and a great time!
+                            </div>
+                        </div>
+                    </div>
+                    <div id="event-detail-pics" class="tab-content row" style="display: none;">
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                    </div>
+                    <div id="event-detail-comments" class="tab-content row" style="display: none;">
+						<div class="row item" ng-repeat="item in user.feeds">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+                                    <div class="col-xs-10">
+                                        <strong>{{item.firstName}} {{item.lastName}}</strong>&nbsp;&nbsp; {{item.timeLapse}} mins ago
+                                        <p>{{item.text}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4 center"><div class="vote-down arrow-down"></div><div class="talley">{{item.voteTalley}}</div><div class="vote-up arrow-up"></div></div>
+                                    <div class="col-xs-4 item-comments">Comments ({{item.comments.length}})</div>
+                                </div>
+                            </div>
+						</div>
+                    </div>
+            </div>
+        </div>
+        <div id="group-detail-page" data-role="page">
+            <div class="main-header row" data-role="header">
+                    <a href="#" class="ah-back-btn" data-rel="back">< After Hours</a>
+            </div>
+            <div class="main-content" data-role="content">
+                    <div class="group-detail-header page-header tab-list row">
+                        <div class="tab active" tab-ref="#group-detail-info">Group Info<div class="divider"></div></div>
+                        <div class="tab next-tab" tab-ref="#group-detail-events">Events<div class="divider"></div></div>
+                        <div class="tab" tab-ref="#group-detail-pics">Pictures<div class="divider"></div></div>
+                        <div class="tab" tab-ref="#group-detail-comments">Comments</div>
+					</div>
+                    <div id="group-detail-info" class="tab-content">
+                        <div class="header row">
+                            <div class="info">
+                                <li><span class="heading">{{selectedGroup.name}}</span>&nbsp;<small>- {{selectedGroup.privacy}}</small></li>
+                                <li><span class="small">{{selectedGroup.type}} Group | {{selectedGroup.owner}}</span></li>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12"><b>Description</b></div>
+                            <div class="col-xs-12">
+                                Come celebrate with us in Hawaii!!! We'll have great drinks, great people, and a great time!
+                            </div>
+                        </div>
+                        <div class="members">
+                            <div class="row">
+                                <div class="col-xs-3"><b>Members (35)</b></div>
+                                <div class="col-xs-9" style="text-align: right; padding-right: 10px;">
+                                    <a href="#">+ Invite</a>
+                                </div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                                <div class="col-xs-2"><img src="{% static 'polls/img/LakeGeneva.png' %}" style="height: 50px; max-width: 50px;"/></div>
+                            </div>
+                        </div>
+                        <div class="row upcoming-events">
+                            <div class="col-xs-12 label"><b>Upcoming Events</b></div>
+                            <div class="container">
+                            <div class="event-container row">
+                                <div class="col-xs-4 date-container">
+                                    <table class="flip-book-date">
+                                        <tr><td class="month-year">Feb 2015</td></tr>
+                                        <tr><td class="day">22</td></tr>
+                                    </table>
+                                </div>
+                                <div class="col-xs-8">
+								    <li><span class="heading">After Hours Kick-Off Party</span>&nbsp;<small>- Invite Only</small>
+                                    <li>Merriman's
+                                    <li>1234 Side Street
+                                    <li>Friday Jan 9th @ 9pm
+                                    <li><span class="small">Hosted by Apt 312 | Invited by Eric Smith</span>
+                                </div>
+                            </div>
+                            <div class="event-container row">
+                                <div class="col-xs-4 date-container">
+                                    <table class="flip-book-date">
+                                        <tr><td class="month-year">Feb 2015</td></tr>
+                                        <tr><td class="day">22</td></tr>
+                                    </table>
+                                </div>
+                                <div class="col-xs-8">
+								    <li><span class="heading">After Hours Kick-Off Party</span>&nbsp;<small>- Invite Only</small>
+                                    <li>Merriman's
+                                    <li>1234 Side Street
+                                    <li>Friday Jan 9th @ 9pm
+                                    <li><span class="small">Hosted by Apt 312 | Invited by Eric Smith</span>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row recent-activity">
+                            <div class="col-xs-12"><b>Recent Activity</b></div>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+                                    <div class="col-xs-10">
+                                        <strong>Mike Smith</strong>&nbsp;&nbsp; 2 mins ago
+                                        <p>Posted a comment...</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+                                    <div class="col-xs-10">
+                                        <strong>Mike Smith</strong>&nbsp;&nbsp; 2 mins ago
+                                        <p>Uploaded a new picture...</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+                                    <div class="col-xs-10">
+                                        <strong>Mike Smith</strong>&nbsp;&nbsp; 2 mins ago
+                                        <p>Created an event...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="group-detail-events" class="tab-content">
+                        <div class="search-header row">
+						  <div class="col"><input data-type="search" id="eventFilterText" name="eventFilterText" placeholder="Filter..."></input></div>
+				        </div>
+					   <div class="events-list" data-filter="true" data-input="#eventFilterText">
+						<div class="event row" event-id="{{event.id}}" ng-repeat="event in user.events" ng-click="viewEventDetail(event)">
+							<div class="col-xs-4 img-container"><img class="event-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+							<div class="col-xs-8">
+								<li><span class="heading">{{event.name}}</span>&nbsp;<small>- {{event.privacy}}</small>
+                                <li>{{event.location.name}}
+                                <li>{{event.location.address1}}
+                                <li>{{event.shortDateTimeDesc}}
+                                <li><span class="small">Hosted by {{event.host}} | Invited by {{event.sender}}</span>
+							</div>
+						</div>
+					   </div>
+                    </div>
+                    <div id="group-detail-pics" class="tab-content row" style="display: none;">
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                        <div class="row"><div class="col-xs-12"><img src="{% static 'polls/img/LakeGeneva.png' %}"/></div></div>
+                    </div>
+                    <div id="group-detail-comments" class="tab-content row" style="display: none;">
+						<div class="row item" ng-repeat="item in user.feeds">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-2"><img class="profile-pic" src="{% static 'polls/img/LakeGeneva.png' %}"/></div>
+                                    <div class="col-xs-10">
+                                        <strong>{{item.firstName}} {{item.lastName}}</strong>&nbsp;&nbsp; {{item.timeLapse}} mins ago
+                                        <p>{{item.text}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4"></div>
+                                    <div class="col-xs-4 center"><div class="vote-down arrow-down"></div><div class="talley">{{item.voteTalley}}</div><div class="vote-up arrow-up"></div></div>
+                                    <div class="col-xs-4 item-comments">Comments ({{item.comments.length}})</div>
+                                </div>
+                            </div>
+						</div>
+                    </div>
+            </div>
+        </div>
+    </div>
+        <script type="text/javascript" src="{% static 'polls/scripts/jquery-1.11.2.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'polls/scripts/jquery.mobile-1.4.5.min.js' %}"></script>
+        <!--<script type="text/javascript" src="{% static 'polls/scripts/bootstrap.min.js' %}"></script>-->
+        <script type="text/javascript" src="{% static 'polls/scripts/angular-1.3.5.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'polls/scripts/index.js' %}"></script>
+        <script type="text/javascript" src="{% static 'polls/scripts/master.js' %}"></script>
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script>
+      function initialize() {
+        var mapCanvas = document.getElementById('map-canvas');
+        var mapOptions = {
+          center: new google.maps.LatLng(41.87811, -87.62980),
+          zoom: 12,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions)
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    </body>
+</html>
