@@ -16,5 +16,14 @@
 				noteForm.submit();
 			}
 		};
+
+		$scope.saveNote = function() {
+			var noteText = document.getElementById("noteText").value;
+			if (noteText != null) {
+				var saveForm = document.forms.namedItem("saveNoteForm");
+				saveForm.elements.namedItem("text").value = noteText;
+				saveForm.submit();
+			}
+		};
 	}]);
 })();

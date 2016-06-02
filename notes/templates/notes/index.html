@@ -29,21 +29,26 @@
         {% if note %}
             <div class="header">
                 <div class="container">
-                    <div class="add-note" ng-click="addNote()">[+]</div>
+                    <div class="add-note"><button ng-click="addNote()">New Note</button></div>
                     <div class="heading">{{note.mod_datetime_long}}</div>
+                    <div class="note-actions">
+                        <button ng-click="saveNote()">Save Note</button>&nbsp;&nbsp;&nbsp;
+                        <a href="/notes/{{note.id}}/delete"><button>Delete Note</button></a>
+                    </div>
                 </div>
             </div>
             <div class="text">
-                <textarea maxlength="3000">{{note.text}}</textarea>
+                <textarea id="noteText" name="text" maxlength="3000">{{note.text}}</textarea>
             </div>
         {% else %}
             <div class="header">
-                <div class="add-note" ng-click="addNote()">[+]</div>
+                <div class="add-note"><button ng-click="addNote()">New Note</button></div>
                 <div class="heading"></div>
             </div>
         {% endif %}
     </div>
     <form name="newNoteForm" action="/notes/add/" method="post">{% csrf_token %}<input type="hidden" name="title"></form>
+    <form name="saveNoteForm" action="/notes/{{note.id}}/save/" method="post">{% csrf_token %}<input type="hidden" name="text"></form>
     <script type="text/javascript" src="{% static 'notes/scripts/angular.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'notes/scripts/notes.js' %}"></script>
 </body>
